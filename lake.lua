@@ -8,8 +8,8 @@ print "- licensed under GNU GPLv3"
 local lake_libs = {
 	awesome = awesome,
 }
-local lake_client_keys = {}
-local lake_global_keys = {}
+local lake_client_keys = nil
+local lake_global_keys = nil
 local lake_to_left = {}
 local lake_to_right = {}
 local lake_vars = {}
@@ -55,15 +55,23 @@ lake_api = {
 	end,
 	-- hotkeys
 	global_key = function(k)
-		table.insert(lake_global_keys, k)
+		local awful = ask "awful"
+		if lake_global_keys == nil then
+			lake_global_keys = awful.util.table.join()
+		end
+		lake_global_keys = awful.util.table.join(lake_global_keys, k)
 	end,
 	client_key = function(k)
-		table.insert(lake_client_keys, k)
+		local awful = ask "awful"
+		if lake_client_keys == nil then
+			lake_client_keys = awful.util.table.join()
+		end
+		lake_client_keys = awful.util.table.join(lake_client_keys, k)
 	end,
 }
 
 -- Load Lake plugins
-local lfs = require "lfs"
+local lfs = require "lfs"  -- make sure that Lua Filesystem library is installed
 list = {}
 for f in lfs.dir(".") do
 	table.insert(list, f)
@@ -111,5 +119,8 @@ for s = 1, screen.count() do
 
 	mywibox[s]:set_widget(layout)
 end
+
+-- Apply global hotkeys
+root.keys(lake_global_keys)
 
 --awful.util.spawn "xterm"
