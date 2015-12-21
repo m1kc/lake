@@ -2,6 +2,8 @@
 
 Custom `rc.lua` for Awesome WM, written with plugins in mind. Making the Awesome truly awesome.
 
+**Heads up!** This stuff is still work-in-progress and sorta incomplete.
+
 
 ## The Idea
 
