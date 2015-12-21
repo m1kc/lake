@@ -7,6 +7,7 @@ print "- licensed under GNU GPLv3"
 -- Lake API
 local lake_libs = {
 	awesome = awesome,
+	mouse = mouse,
 }
 local lake_client_keys = nil
 local lake_global_keys = nil
