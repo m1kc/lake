@@ -23,8 +23,15 @@ return function(lake)
 	local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 		                                 menu = mymainmenu })
 
-	lake.global_key(awful.key({ modkey,           }, "w", function () mymainmenu:show() end))
-	
-	-- TODO: mouse bindings
-	--awful.button({ }, 3, function () mymainmenu:toggle() end)
+	for s = 1, lake.screens() do
+		lake.add_to_left(mylauncher, s)
+	end
+
+	lake.global_key(awful.key({ modkey,           }, "w", function()
+		mymainmenu:show()
+	end))
+
+	lake.global_button(awful.button({ }, 3, function()
+		mymainmenu:toggle()
+	end))
 end
