@@ -8,6 +8,7 @@ print "- licensed under GNU GPLv3"
 local lake_libs = {
 	awesome = awesome,
 	mouse = mouse,
+	timer = timer,
 }
 local lake_client_keys = nil
 local lake_global_keys = nil
