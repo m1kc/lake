@@ -19,7 +19,7 @@ Make sure that Lua Filesystem library is installed. Then, replace your old `rc.l
 Lake will attempt to load every file that starts with `lake-`. Plugins are loaded in alphabetical order so you can control loading order and widget positions by renaming corresponding files.
 
 
-## Opinionation
+## Opinionation and flexibility
 
 Lake tries to make your life easier, not to stand in your way. Even basic features are implemented as plugins and can be turned off at any time. Other features (such as sloppy focus) are baked into Lake core but they can be turned off as well using vars API. The only hard-coded thing is the panel: Lake assumes you will need one and creates it automatically (its position is configurable as well). So, Lake is almost as flexible as usual `rc.lua` while introducing significantly less friction.
 
