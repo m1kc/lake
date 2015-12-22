@@ -66,12 +66,12 @@ end
 ```
 
 
-### lake.add_to_left(widget), lake.add_to_middle(widget), lake.add_to_right(widget)
+### lake.add_to_left(widget, screen), lake.add_to_middle(widget, screen), lake.add_to_right(widget, screen)
 
 Add widget to left, middle or right section of the panel.
 
 
-### lake.override_left(widget), lake.override_middle(widget), lake.override_right(widget)
+### lake.override_left(widget, screen), lake.override_middle(widget, screen), lake.override_right(widget, screen)
 
 Override left, middle or right section of the panel with the given widget. This will delete every widget from the section and prevent adding new ones.
 
