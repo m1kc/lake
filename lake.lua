@@ -227,8 +227,8 @@ for s = 1, screen.count() do
 end
 
 -- Apply global hotkeys
-root.keys(lake_global_keys)
-root.buttons(lake_global_buttons)
+if lake_global_keys ~= nil then root.keys(lake_global_keys) end
+if lake_global_buttons ~= nil then root.buttons(lake_global_buttons) end
 
 -- Apply rules
 _rules = {
