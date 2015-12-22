@@ -2,13 +2,13 @@ return function(lake)
 	local awful = lake.ask "awful"
 	local modkey = lake.get_var "modkey"
 	local awesome = lake.ask "awesome"
-	
+
 	-- Switching clients
 	lake.global_key(awful.key({ modkey,           }, "j", function()
 		awful.client.focus.byidx( 1)
 		if client.focus then client.focus:raise() end
 	end))
-    lake.global_key(awful.key({ modkey,           }, "k", function()
+	lake.global_key(awful.key({ modkey,           }, "k", function()
 		awful.client.focus.byidx(-1)
 		if client.focus then client.focus:raise() end
 	end))
@@ -42,7 +42,7 @@ return function(lake)
 	lake.global_key(awful.key({ modkey, "Shift"   }, "space", function() awful.layout.inc(layouts, -1) end))
 
 	lake.global_key(awful.key({ modkey, "Control" }, "n", awful.client.restore))
-	
+
 	-- Client keys
 	lake.client_key(awful.key({ lake.get_var("modkey"),           }, "f",      function (c) c.fullscreen = not c.fullscreen  end))
 	lake.client_key(awful.key({ lake.get_var("modkey"), "Shift"   }, "c",      function (c) c:kill()                         end))
@@ -56,11 +56,11 @@ return function(lake)
 		-- minimized, since minimized clients can't have the focus.
 		c.minimized = true
 	end))
-    lake.client_key(awful.key({ lake.get_var("modkey"),           }, "m", function(c)
+	lake.client_key(awful.key({ lake.get_var("modkey"),           }, "m", function(c)
 		c.maximized_horizontal = not c.maximized_horizontal
 		c.maximized_vertical   = not c.maximized_vertical
 	end))
-	
+
 	-- Client mouse bindings
 	lake.client_button(awful.button({ }, 1, function (c) client.focus = c; c:raise() end))
 	lake.client_button(awful.button({ modkey }, 1, awful.mouse.client.move))

@@ -1,0 +1,1 @@
+/data/m1kc/Проекты/lake/lake.lua

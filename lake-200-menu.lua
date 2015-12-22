@@ -12,16 +12,18 @@ return function(lake)
 		{ "quit", awesome.quit }
 	}
 
-	local mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-		                                { "xterm", lake.get_var("terminal") },
-		                                { "lxterminal", "lxterminal" },
-		                                { "screenshot", "gnome-screenshot -i" },
-		                                { "lock screen", "xscreensaver-command -lock" },
-		                              }
-		                    })
+	local mymainmenu = awful.menu({ items = {
+		{ "awesome", myawesomemenu, beautiful.awesome_icon },
+		{ "xterm", lake.get_var("terminal") },
+		{ "lxterminal", "lxterminal" },
+		{ "screenshot", "gnome-screenshot -i" },
+		{ "lock screen", "xscreensaver-command -lock" },
+	}})
 
-	local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-		                                 menu = mymainmenu })
+	local mylauncher = awful.widget.launcher({
+		image = beautiful.awesome_icon,
+		menu = mymainmenu
+	})
 
 	for s = 1, lake.screens() do
 		lake.add_to_left(mylauncher, s)
