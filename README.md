@@ -12,7 +12,7 @@ Thankfully, Lake comes and saves your day by putting some auto-management on thi
 
 ## So, how do I start?
 
-Replace your old `rc.lua` with this brand new `lake.lua`, probably renaming it in the process. After that, fill your config folder with some nice plugins or write your own.
+Make sure that Lua Filesystem library is installed. Then, replace your old `rc.lua` with this brand new `lake.lua`, probably renaming it in the process. After that, fill your config folder with some nice plugins or write your own.
 
 Lake will attempt to load every file that starts with `lake-`. Plugins are loaded in alphabetical order so you can control loading order and widget positions by renaming corresponding files.
 
