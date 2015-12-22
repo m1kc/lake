@@ -46,4 +46,13 @@ return function(lake)
 			end
 		end))
 	end
+
+	-- Mouse bindings
+	lake.global_button(awful.button({ }, 4, awful.tag.viewnext))
+	lake.global_button(awful.button({ }, 5, awful.tag.viewprev))
+
+	-- More keys
+	lake.global_key(awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ))
+	lake.global_key(awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ))
+	lake.global_key(awful.key({ modkey,           }, "Escape", awful.tag.history.restore))
 end

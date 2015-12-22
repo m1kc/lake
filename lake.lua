@@ -109,7 +109,6 @@ lake_api = {
 		end
 		lake_global_buttons = awful.util.table.join(lake_global_buttons, k)
 	end,
-	--[[
 	client_key = function(k)
 		local awful = ask "awful"
 		if lake_client_keys == nil then
@@ -117,7 +116,13 @@ lake_api = {
 		end
 		lake_client_keys = awful.util.table.join(lake_client_keys, k)
 	end,
-	]]
+	client_button = function(k)
+		local awful = ask "awful"
+		if lake_client_buttons == nil then
+			lake_client_buttons = awful.util.table.join()
+		end
+		lake_client_buttons = awful.util.table.join(lake_client_buttons, k)
+	end,
 }
 
 -- Load Lake plugins
@@ -135,9 +140,13 @@ for i,f in ipairs(list) do
 	end
 end
 
--- Basic layout
+-- Deps
 local awful = ask "awful"
 local wibox = ask "wibox"
+local beautiful = ask "beautiful"
+awful.rules = ask "awful.rules"
+
+-- Basic layout
 mywibox = {}
 for s = 1, screen.count() do
 	print("For screen #" .. s .. ":")
@@ -211,4 +220,18 @@ end
 root.keys(lake_global_keys)
 root.buttons(lake_global_buttons)
 
---awful.util.spawn "xterm"
+-- Apply rules
+awful.rules.rules = {
+	-- All clients will match this rule.
+	{
+		rule = { },
+		properties = {
+			border_width = beautiful.border_width,
+			border_color = beautiful.border_normal,
+			focus = awful.client.focus.filter,
+			raise = true,
+			keys = lake_client_keys,
+			buttons = lake_client_buttons
+		}
+	}
+}
