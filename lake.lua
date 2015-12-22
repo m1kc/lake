@@ -143,6 +143,7 @@ for s = 1, screen.count() do
 	print("For screen #" .. s .. ":")
 	mywibox[s] = awful.wibox({ position = "top", screen = s })  -- TODO: move it from plugins
 	
+	-- Process widgets
 	local left_layout = wibox.layout.fixed.horizontal()
 	print("Processing left widgets (" .. #lake_to_left .. " total)...")
 	for i, v in pairs(lake_to_left) do
@@ -170,13 +171,39 @@ for s = 1, screen.count() do
 	end
 	print(" ok")
 	
+	-- Overrides
+	print("Processing left overrides (" .. #lake_override_left .. " total)...")
+	for i, v in pairs(lake_override_left) do
+		if v.screen == s then
+			print(" Overriding left")
+			left_layout = v.widget
+		end
+	end
+	print(" ok")
+
+	print("Processing middle overrides (" .. #lake_override_middle .. " total)...")
+	for i, v in pairs(lake_override_middle) do
+		if v.screen == s then
+			print(" Overriding middle")
+			middle_layout = v.widget
+		end
+	end
+	print(" ok")
+
+	print("Processing right overrides (" .. #lake_override_right .. " total)...")
+	for i, v in pairs(lake_override_right) do
+		if v.screen == s then
+			print(" Overriding middle")
+			right_layout = v.widget
+		end
+	end
+	print(" ok")
+
+	-- Bring it all together
 	local layout = wibox.layout.align.horizontal()
 	layout:set_left(left_layout)
-	--TODO
-	--layout:set_middle(mytasklist[s])
 	layout:set_middle(middle_layout)
 	layout:set_right(right_layout)
-
 	mywibox[s]:set_widget(layout)
 end
 
