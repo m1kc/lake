@@ -137,15 +137,16 @@ lake_api = {
 
 -- Load Lake plugins
 local lfs = require "lfs"  -- make sure that Lua Filesystem library is installed
-list = {}
-for f in lfs.dir(".") do
+local list = {}
+local path = "./"
+for f in lfs.dir(path) do
 	table.insert(list, f)
 end
 table.sort(list)
 for i,f in ipairs(list) do
 	if string.find(f, "lake-", 1, true) == 1 then
 		print("Loading plugin: "..f)
-		local plugin = dofile(f)
+		local plugin = dofile(path..f)
 		plugin(lake_api)
 	end
 end
@@ -155,6 +156,15 @@ local awful = ask "awful"
 local wibox = ask "wibox"
 local beautiful = ask "beautiful"
 awful.rules = ask "awful.rules"
+
+--[[
+local naughty = ask "naughty"
+naughty.notify({
+	preset = naughty.config.presets.critical,
+	title = "Scanned dir",
+	text = path
+})
+]]
 
 -- Basic layout
 mywibox = {}
