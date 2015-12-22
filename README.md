@@ -44,7 +44,9 @@ Get lake variable. These variables are globally visible.
 
 Lake itself uses some vars as well:
 
-* TODO
+* **sloppy_focus** (default: **true**) &mdash; if true, make windows active on hover;
+* **titlebars** (default: **false**) &mdash; if true, show titlebar above every window;
+* **panel_position** (default: **"top"**) &mdash; well, panel position.
 
 
 ### lake.screens()
