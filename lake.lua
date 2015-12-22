@@ -19,7 +19,12 @@ local lake_to_right = {}
 local lake_override_left = {}
 local lake_override_middle = {}
 local lake_override_right = {}
-local lake_vars = {}
+local lake_rules = {}
+local lake_vars = {
+	sloppy_focus = true,
+	titlebars = false,
+	panel_position = "top",
+}
 
 local ask = function(name)
 	if lake_libs[name] ~= nil then
@@ -123,6 +128,10 @@ lake_api = {
 		end
 		lake_client_buttons = awful.util.table.join(lake_client_buttons, k)
 	end,
+	-- etc
+	rule = function(r)
+		table.insert(lake_rules, r)
+	end,
 }
 
 -- Load Lake plugins
@@ -150,7 +159,7 @@ awful.rules = ask "awful.rules"
 mywibox = {}
 for s = 1, screen.count() do
 	print("For screen #" .. s .. ":")
-	mywibox[s] = awful.wibox({ position = "top", screen = s })  -- TODO: move it from plugins
+	mywibox[s] = awful.wibox({ position = get_var("panel_position"), screen = s })
 	
 	-- Process widgets
 	local left_layout = wibox.layout.fixed.horizontal()
@@ -221,7 +230,7 @@ root.keys(lake_global_keys)
 root.buttons(lake_global_buttons)
 
 -- Apply rules
-awful.rules.rules = {
+_rules = {
 	-- All clients will match this rule.
 	{
 		rule = { },
@@ -235,3 +244,82 @@ awful.rules.rules = {
 		}
 	}
 }
+for i, v in ipairs(lake_rules) do
+	table.insert(_rules, v)
+end
+awful.rules.rules = _rules
+
+
+-- {{{ Signals
+-- Signal function to execute when a new client appears.
+client.connect_signal("manage", function (c, startup)
+	-- Enable sloppy focus
+	if get_var("sloppy_focus") then
+		c:connect_signal("mouse::enter", function(c)
+			if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and awful.client.focus.filter(c) then
+				client.focus = c
+			end
+		end)
+	end
+
+    if not startup then
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        -- awful.client.setslave(c)
+
+        -- Put windows in a smart way, only if they does not set an initial position.
+        if not c.size_hints.user_position and not c.size_hints.program_position then
+            awful.placement.no_overlap(c)
+            awful.placement.no_offscreen(c)
+        end
+    end
+
+    local titlebars_enabled = get_var("titlebars")
+    if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
+        -- buttons for the titlebar
+        local buttons = awful.util.table.join(
+                awful.button({ }, 1, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.move(c)
+                end),
+                awful.button({ }, 3, function()
+                    client.focus = c
+                    c:raise()
+                    awful.mouse.client.resize(c)
+                end)
+                )
+
+        -- Widgets that are aligned to the left
+        local left_layout = wibox.layout.fixed.horizontal()
+        left_layout:add(awful.titlebar.widget.iconwidget(c))
+        left_layout:buttons(buttons)
+
+        -- Widgets that are aligned to the right
+        local right_layout = wibox.layout.fixed.horizontal()
+        right_layout:add(awful.titlebar.widget.floatingbutton(c))
+        right_layout:add(awful.titlebar.widget.maximizedbutton(c))
+        right_layout:add(awful.titlebar.widget.stickybutton(c))
+        right_layout:add(awful.titlebar.widget.ontopbutton(c))
+        right_layout:add(awful.titlebar.widget.closebutton(c))
+
+        -- The title goes in the middle
+        local middle_layout = wibox.layout.flex.horizontal()
+        local title = awful.titlebar.widget.titlewidget(c)
+        title:set_align("center")
+        middle_layout:add(title)
+        middle_layout:buttons(buttons)
+
+        -- Now bring it all together
+        local layout = wibox.layout.align.horizontal()
+        layout:set_left(left_layout)
+        layout:set_right(right_layout)
+        layout:set_middle(middle_layout)
+
+        awful.titlebar(c):set_widget(layout)
+    end
+end)
+
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+-- }}}
