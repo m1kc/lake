@@ -46,7 +46,9 @@ Lake itself uses some vars as well:
 
 * **sloppy_focus** (default: **true**) &mdash; if true, make windows active on hover;
 * **titlebars** (default: **false**) &mdash; if true, show titlebar above every window;
-* **panel_position** (default: **"top"**) &mdash; well, panel position.
+* **panel_position** (default: **"top"**) &mdash; panel position;
+* **modkey** (default: **"Mod4"**) &mdash; well, modkey;
+* **terminal** (default: **"xterm"**), **editor** (default: **$EDITOR or "nano"**) &mdash; commandlines for standard programs.
 
 
 ### lake.screens()
