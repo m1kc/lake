@@ -141,7 +141,7 @@ local wibox = ask "wibox"
 mywibox = {}
 for s = 1, screen.count() do
 	print("For screen #" .. s .. ":")
-	mywibox[s] = awful.wibox({ position = "top", screen = s })
+	mywibox[s] = awful.wibox({ position = "top", screen = s })  -- TODO: move it from plugins
 	
 	local left_layout = wibox.layout.fixed.horizontal()
 	print("Processing left widgets (" .. #lake_to_left .. " total)...")
