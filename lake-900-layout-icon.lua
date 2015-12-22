@@ -15,12 +15,5 @@ return function(lake)
 		))
 		lake.add_to_right(mylayoutbox[s], s)
 	end
-	-- Hotkeys
-	lake.global_key(awful.key({ modkey,           }, "space", function()
-		awful.layout.inc(layouts,  1)
-	end))
-	lake.global_key(awful.key({ modkey, "Shift"   }, "space", function()
-		awful.layout.inc(layouts, -1)
-	end))
 end
 

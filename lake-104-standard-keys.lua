@@ -1,6 +1,7 @@
 return function(lake)
 	local awful = lake.ask "awful"
 	local modkey = lake.get_var "modkey"
+	local layouts = lake.get_var "layouts"
 	local awesome = lake.ask "awesome"
 
 	-- Switching clients
