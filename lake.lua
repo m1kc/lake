@@ -135,36 +135,57 @@ lake_api = {
 	end,
 }
 
+-- Deps
+local awful = ask "awful"
+local wibox = ask "wibox"
+local beautiful = ask "beautiful"
+awful.rules = ask "awful.rules"
+local naughty = ask "naughty"
+local lfs = ask "lfs"  -- make sure that Lua Filesystem library is installed
+
+
 -- Load Lake plugins
-local lfs = require "lfs"  -- make sure that Lua Filesystem library is installed
+
+local detectDir = function()
+	local path = lfs.currentdir().."/"
+	print("Trying dir: "..path)
+	for f in lfs.dir(path) do
+		if (f == "lake.lua") or (f == "rc.lua") then
+			print " seems good"
+			return path
+		end
+	end
+	path = "/home/"..os.getenv("USER").."/.config/awesome/"
+	print("Falling back to "..path)
+	return path
+end
+
 local list = {}
-local path = "./"
+local path = detectDir()  -- "./"
 for f in lfs.dir(path) do
 	table.insert(list, f)
 end
 table.sort(list)
+local count = 0
 for i,f in ipairs(list) do
 	if string.find(f, "lake-", 1, true) == 1 then
+		count = count+1
 		print("Loading plugin: "..f)
 		local plugin = dofile(path..f)
 		plugin(lake_api)
 	end
 end
 
--- Deps
-local awful = ask "awful"
-local wibox = ask "wibox"
-local beautiful = ask "beautiful"
-awful.rules = ask "awful.rules"
-
---[[
-local naughty = ask "naughty"
-naughty.notify({
-	preset = naughty.config.presets.critical,
-	title = "Scanned dir",
-	text = path
-})
-]]
+if count == 0 then
+	naughty.notify({
+		preset = naughty.config.presets.critical,
+		title = "No Lake plugins found",
+		text = "That usually means that Lake failed to detect plugins dir.\n"..
+			"If nothing helps, edit lake.lua and set 'path' variable to absolute path to the plugins dir\n"..
+			"(usually /home/username/.config/awesome).\n"..
+			"Scanned dir was: "..path
+	})
+end
 
 -- Basic layout
 mywibox = {}

@@ -14,9 +14,7 @@ Thankfully, Lake comes and saves your day by putting some auto-management on thi
 
 Make sure that Lua Filesystem library is installed. Then, replace your old `rc.lua` with this brand new `lake.lua`, probably renaming it in the process. After that, fill your config folder with some nice plugins or write your own.
 
-**Note:** Lake may fail to detect plugins dir and therefore fail startup. While this isn't fixed, replace `.` with absolute path to the plugins dir in [lake.lua](https://github.com/m1kc/lake/blob/master/lake.lua#L141).
-
-Lake will attempt to load every file that starts with `lake-`. Plugins are loaded in alphabetical order so you can control loading order and widget positions by renaming corresponding files.
+Please not that Lake has no way to detect its path, so it looks for plugins in cwd first and falls back to `/home/$USER/.config/awesome/` if that fails. Lake will attempt to load every file that starts with `lake-`. It doesn't process subdirs. Plugins are loaded in alphabetical order so you can control execution order and widget positions by renaming corresponding files.
 
 
 ## Opinionation and flexibility
