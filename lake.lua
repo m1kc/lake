@@ -243,7 +243,7 @@ for s = 1, screen.count() do
 	print("Processing right overrides (" .. #lake_override_right .. " total)...")
 	for i, v in pairs(lake_override_right) do
 		if v.screen == s then
-			print(" Overriding middle")
+			print(" Overriding right")
 			right_layout = v.widget
 		end
 	end
