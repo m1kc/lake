@@ -14,12 +14,8 @@ local lake_client_keys = nil
 local lake_global_keys = nil
 local lake_client_buttons = nil
 local lake_global_buttons = nil
-local lake_to_left = {}
-local lake_to_middle = {}
-local lake_to_right = {}
-local lake_override_left = {}
-local lake_override_middle = {}
-local lake_override_right = {}
+local lake_to = {left = {}, middle = {}, right = {}}
+local lake_override = {left = {}, middle = {}, right = {}}
 local lake_rules = {}
 local lake_vars = {
 	sloppy_focus = true,
@@ -51,6 +47,26 @@ local checkScreen = function(x)
 	assert(x <= screen.count(), "Invalid screen ID: "..x..", we have only "..screen.count().." screen(s)")
 end
 
+function make_adder_to(side)
+	return function(widget, screen)
+		checkScreen(screen)
+		table.insert(lake_to[side], {
+			widget = widget,
+			screen = screen
+		})
+	end
+end
+
+function make_overrider_at(side)
+	return function(widget, screen)
+		checkScreen(screen)
+		table.insert(lake_override[side], {
+			widget = widget,
+			screen = screen
+		})
+	end
+end
+
 lake_api = {
 	-- utils
 	ask = ask,
@@ -60,46 +76,13 @@ lake_api = {
 	get_var = get_var,
 	set_var = set_var,
 	-- widgets
-	add_to_left = function(widget, screen)
-		checkScreen(screen)
-		table.insert(lake_to_left, {
-			widget = widget,
-			screen = screen
-		})
-	end,
-	add_to_middle = function(widget, screen)
-		checkScreen(screen)
-		table.insert(lake_to_middle, {
-			widget = widget,
-			screen = screen
-		})
-	end,
-	add_to_right = function(widget, screen)
-		checkScreen(screen)
-		table.insert(lake_to_right, {
-			widget = widget,
-			screen = screen
-		})
-	end,
+	add_to_left = make_adder_to("left"),
+	add_to_middle = make_adder_to("middle"),
+	add_to_right = make_adder_to("right"),
 	-- big widgets
-	override_left = function(widget, screen)
-		table.insert(lake_override_left, {
-			widget = widget,
-			screen = screen
-		})
-	end,
-	override_middle = function(widget, screen)
-		table.insert(lake_override_middle, {
-			widget = widget,
-			screen = screen
-		})
-	end,
-	override_right = function(widget, screen)
-		table.insert(lake_override_right, {
-			widget = widget,
-			screen = screen
-		})
-	end,
+	override_left = make_overrider_at("left"),
+	override_middle = make_overrider_at("middle"),
+	override_right = make_overrider_at("right"),
 	-- hotkeys
 	global_key = function(k)
 		local awful = ask "awful"
@@ -196,7 +179,6 @@ for s = 1, screen.count() do
 	layout = {left = nil, middle = nil, right = nil}
 
 	-- Process widgets
-	lake_to = {left = lake_to_left, middle = lake_to_middle, right = lake_to_right}
 	for i, side in pairs({'left', 'middle', 'right'}) do
 		layout[side] = wibox.layout.fixed.horizontal()
 		print("Processing " .. side .. " widgets (" .. #lake_to[side] .. " total)...")
@@ -209,7 +191,6 @@ for s = 1, screen.count() do
 	end
 
 	-- Overrides
-	lake_override = {left = lake_override_left, middle = lake_override_middle, right = lake_override_right}
 	for i, side in pairs({'left', 'middle', 'right'}) do
 		print("Processing " .. side .. " overrides (" .. #lake_override[side] .. " total)...")
 		for i, v in pairs(lake_override[side]) do
