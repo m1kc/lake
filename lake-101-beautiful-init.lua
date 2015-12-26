@@ -5,7 +5,7 @@ return function(lake)
 	beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 	if beautiful.wallpaper then
 		for s = 1, lake.screens() do
-		    gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+			gears.wallpaper.maximized(beautiful.wallpaper, s, true)
 		end
 	end
 end
