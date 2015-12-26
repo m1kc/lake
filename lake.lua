@@ -193,69 +193,40 @@ mywibox = {}
 for s = 1, screen.count() do
 	print("For screen #" .. s .. ":")
 	mywibox[s] = awful.wibox({ position = get_var("panel_position"), screen = s })
+	layout = {left = nil, middle = nil, right = nil}
 
 	-- Process widgets
-	local left_layout = wibox.layout.fixed.horizontal()
-	print("Processing left widgets (" .. #lake_to_left .. " total)...")
-	for i, v in pairs(lake_to_left) do
-		if v.screen == s then
-			left_layout:add(v.widget)
+	lake_to = {left = lake_to_left, middle = lake_to_middle, right = lake_to_right}
+	for i, side in pairs({'left', 'middle', 'right'}) do
+		layout[side] = wibox.layout.fixed.horizontal()
+		print("Processing " .. side .. " widgets (" .. #lake_to[side] .. " total)...")
+		for i, v in pairs(lake_to[side]) do
+			if v.screen == s then
+				layout[side]:add(v.widget)
+			end
 		end
+		print(" ok")
 	end
-	print(" ok")
-
-	local middle_layout = wibox.layout.fixed.horizontal()
-	print("Processing middle widgets (" .. #lake_to_middle .. " total)...")
-	for i, v in pairs(lake_to_middle) do
-		if v.screen == s then
-			middle_layout:add(v.widget)
-		end
-	end
-	print(" ok")
-
-	local right_layout = wibox.layout.fixed.horizontal()
-	print("Processing right widgets (" .. #lake_to_right .. " total)...")
-	for i, v in pairs(lake_to_right) do
-		if v.screen == s then
-			right_layout:add(v.widget)
-		end
-	end
-	print(" ok")
 
 	-- Overrides
-	print("Processing left overrides (" .. #lake_override_left .. " total)...")
-	for i, v in pairs(lake_override_left) do
-		if v.screen == s then
-			print(" Overriding left")
-			left_layout = v.widget
+	lake_override = {left = lake_override_left, middle = lake_override_middle, right = lake_override_right}
+	for i, side in pairs({'left', 'middle', 'right'}) do
+		print("Processing " .. side .. " overrides (" .. #lake_override[side] .. " total)...")
+		for i, v in pairs(lake_override[side]) do
+			if v.screen == s then
+				print(" Overriding left")
+				layout[side] = v.widget
+			end
 		end
+		print(" ok")
 	end
-	print(" ok")
-
-	print("Processing middle overrides (" .. #lake_override_middle .. " total)...")
-	for i, v in pairs(lake_override_middle) do
-		if v.screen == s then
-			print(" Overriding middle")
-			middle_layout = v.widget
-		end
-	end
-	print(" ok")
-
-	print("Processing right overrides (" .. #lake_override_right .. " total)...")
-	for i, v in pairs(lake_override_right) do
-		if v.screen == s then
-			print(" Overriding right")
-			right_layout = v.widget
-		end
-	end
-	print(" ok")
 
 	-- Bring it all together
-	local layout = wibox.layout.align.horizontal()
-	layout:set_left(left_layout)
-	layout:set_middle(middle_layout)
-	layout:set_right(right_layout)
-	mywibox[s]:set_widget(layout)
+	local main_layout = wibox.layout.align.horizontal()
+	main_layout:set_left(layout.left)
+	main_layout:set_middle(layout.middle)
+	main_layout:set_right(layout.right)
+	mywibox[s]:set_widget(main_layout)
 end
 
 -- Apply global hotkeys
