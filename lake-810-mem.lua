@@ -14,7 +14,6 @@ end
 
 return function(lake)
 	local awful = lake.ask "awful"
-	local timer = lake.ask "timer"
 	
 	local memgraph = awful.widget.graph()
 	memgraph:set_width(50)
@@ -26,14 +25,12 @@ return function(lake)
 		lake.add_to_right(memgraph, s)
 	end
 	
-	local timer = timer({ timeout = 5 })
-	timer:connect_signal("timeout", function()
+	client.connect_signal("tick-5", function()
 		total, free, buffers, cached = get_mem_info()
 		memgraph:set_max_value(total)
 		memgraph:add_value(total-free-buffers-cached, 1)
 		memgraph:add_value(buffers, 2)
 		memgraph:add_value(cached, 3)
 	end)
-	timer:start()
 end
 

@@ -41,7 +41,6 @@ end
 return function(lake)
 	local awful = lake.ask "awful"
 	local wibox = lake.ask "wibox"
-	local timer = lake.ask "timer"
 	
 	local cpugraph = awful.widget.graph()
 	cpugraph:set_width(50)
@@ -57,19 +56,15 @@ return function(lake)
 		lake.add_to_right(tempbox, s)
 	end
 	
-	local timer_n = 0
-	local timer = timer({ timeout = 1 })
-	timer:connect_signal("timeout", function()
+	client.connect_signal("tick", function()
 		tempbox:set_text(get_cpu_temp() .. "°C")
-		
-		if timer_n % 5 == 0 then
-			update_cpu_percents()
-			for i = 1, cpus_number do
-			cpugraph:add_value(percents[i], i)
-			end
-		end
-		timer_n = timer_n + 1
 	end)
-	timer:start()
+	
+	client.connect_signal("tick-5", function()
+		update_cpu_percents()
+		for i = 1, cpus_number do
+			cpugraph:add_value(percents[i], i)
+		end
+	end)
 end
 

@@ -142,6 +142,7 @@ local beautiful = ask "beautiful"
 awful.rules = ask "awful.rules"
 local naughty = ask "naughty"
 local lfs = ask "lfs"  -- make sure that Lua Filesystem library is installed
+ask "the-timer"
 
 
 -- Load Lake plugins

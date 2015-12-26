@@ -17,7 +17,6 @@ end
 return function(lake)
 	local awful = lake.ask "awful"
 	local wibox = lake.ask "wibox"
-	local timer = lake.ask "timer"
 	
 	local batbox = wibox.widget.textbox()
 	batbox:set_text("---")
@@ -33,9 +32,7 @@ return function(lake)
 		lake.add_to_right(batgraph, s)
 	end
 	
-	local timer_n = 0
-	local timer = timer({ timeout = 1 })
-	timer:connect_signal("timeout", function()
+	client.connect_signal("tick", function()
 		capacity, power, status = get_bat_info()
 		
 		local flag = ""
@@ -46,25 +43,23 @@ return function(lake)
 			bat_powers[i-1] = bat_powers[i]
 		end
 		bat_powers[5] = power
-		
-		if timer_n % 5 == 0 then
-			local power_avg = 0
-			for i = 1, 5 do
-				power_avg = power_avg + bat_powers[i]
-			end
-			power_avg = power_avg / 5
-			
-			if power_avg < 10000 then
-				batgraph:add_value(0, 1)
-				batgraph:add_value(power_avg, 2)
-			else
-				batgraph:add_value(power_avg/5, 1)
-				batgraph:add_value(10000-power_avg/5, 2)
-			end
-		end
-		
-		timer_n = timer_n + 1
 	end)
-	timer:start()
+	
+	client.connect_signal("tick-5", function()
+		local power_avg = 0
+		for i = 1, 5 do
+			power_avg = power_avg + bat_powers[i]
+		end
+		power_avg = power_avg / 5
+		
+		if power_avg < 10000 then
+			batgraph:add_value(0, 1)
+			batgraph:add_value(power_avg, 2)
+		else
+			batgraph:add_value(power_avg/5, 1)
+			batgraph:add_value(10000-power_avg/5, 2)
+		end
+	end)
+	
 end
 
