@@ -30,7 +30,7 @@ return function(lake)
 		lake.add_to_right(tempbox, s)
 	end
 	
-	client.connect_signal("tick", function()
+	lake.everySecond(function()
 		tempbox:set_text(get_cpu_temp() .. "°C")
 	end)
 end

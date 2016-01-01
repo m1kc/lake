@@ -116,7 +116,42 @@ lake_api = {
 	rule = function(r)
 		table.insert(lake_rules, r)
 	end,
+	timer = function(n, func)
+		if timer_intervals[n] then
+			table.insert(timer_intervals[n], func)
+		else
+			timer_intervals[n] = {func}
+		end
+	end,
+	everySecond = function(func)
+		client.connect_signal("every-second", func)
+	end
 }
+
+
+main_timer = timer({ timeout = 0.1 })
+timer_intervals = {}
+timer_count = 0
+prev_time = os.time()
+
+client.add_signal("every-second")
+
+main_timer:connect_signal("timeout", function()
+	local cur_time = os.time()
+	if prev_time ~= cur_time then
+		client.emit_signal("every-second")
+		prev_time = cur_time
+	end
+
+	for n, listeners in pairs(timer_intervals) do
+		if timer_count % n == 0 then
+			for i, func in pairs(listeners) do func() end
+		end
+	end
+	timer_count = timer_count + 1
+end)
+main_timer:start()
+
 
 -- Deps
 local awful = ask "awful"
@@ -125,7 +160,6 @@ local beautiful = ask "beautiful"
 awful.rules = ask "awful.rules"
 local naughty = ask "naughty"
 local lfs = ask "lfs"  -- make sure that Lua Filesystem library is installed
-ask "the-timer"
 
 
 -- Load Lake plugins

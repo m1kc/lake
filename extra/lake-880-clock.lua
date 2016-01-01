@@ -8,7 +8,7 @@ return function(lake)
 		lake.add_to_right(timebox, s)
 	end
 	
-	client.connect_signal("tick", function()
+	lake.everySecond(function()
 		timebox:set_text(os.date("%X"))
 	end)
 end

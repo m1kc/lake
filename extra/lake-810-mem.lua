@@ -25,7 +25,7 @@ return function(lake)
 		lake.add_to_right(memgraph, s)
 	end
 	
-	client.connect_signal("tick-5", function()
+	lake.timer(50, function()
 		total, free, buffers, cached = get_mem_info()
 		memgraph:set_max_value(total)
 		memgraph:add_value(total-free-buffers-cached, 1)

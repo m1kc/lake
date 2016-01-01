@@ -32,7 +32,7 @@ return function(lake)
 		lake.add_to_right(batgraph, s)
 	end
 	
-	client.connect_signal("tick", function()
+	lake.everySecond(function()
 		capacity, power, status = get_bat_info()
 		
 		local flag = ""
@@ -45,7 +45,7 @@ return function(lake)
 		bat_powers[5] = power
 	end)
 	
-	client.connect_signal("tick-5", function()
+	lake.timer(50, function()
 		local power_avg = 0
 		for i = 1, 5 do
 			power_avg = power_avg + bat_powers[i]

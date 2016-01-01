@@ -44,7 +44,7 @@ return function(lake)
 		lake.add_to_right(cpugraph, s)
 	end
 	
-	client.connect_signal("tick-5", function()
+	lake.timer(50, function()
 		update_cpu_percents()
 		for i = 1, cpus_number do
 			cpugraph:add_value(percents[i], i)
