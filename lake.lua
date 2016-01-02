@@ -41,7 +41,7 @@ local set_var = function(i, v)
 	lake_vars[i] = v
 end
 
-local checkScreen = function(x)
+local check_screen = function(x)
 	assert(x ~= nil, "Invalid screen ID: nil")
 	assert(x >= 1, "Invalid screen ID: "..x)
 	assert(x <= screen.count(), "Invalid screen ID: "..x..", we have only "..screen.count().." screen(s)")
@@ -49,7 +49,7 @@ end
 
 function make_adder_to(side)
 	return function(widget, screen)
-		checkScreen(screen)
+		check_screen(screen)
 		table.insert(lake_to[side], {
 			widget = widget,
 			screen = screen
@@ -59,7 +59,7 @@ end
 
 function make_overrider_at(side)
 	return function(widget, screen)
-		checkScreen(screen)
+		check_screen(screen)
 		table.insert(lake_override[side], {
 			widget = widget,
 			screen = screen
@@ -123,7 +123,7 @@ lake_api = {
 			timer_intervals[n] = {func}
 		end
 	end,
-	everySecond = function(func)
+	every_second = function(func)
 		client.connect_signal("every-second", func)
 	end
 }

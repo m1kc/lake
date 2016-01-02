@@ -22,15 +22,15 @@ end
 
 return function(lake)
 	local wibox = lake.ask "wibox"
-	
+
 	local tempbox = wibox.widget.textbox()
 	tempbox:set_text("---")
-	
+
 	for s = 1, lake.screens() do
 		lake.add_to_right(tempbox, s)
 	end
-	
-	lake.everySecond(function()
+
+	lake.every_second(function()
 		tempbox:set_text(get_cpu_temp() .. "°C")
 	end)
 end
