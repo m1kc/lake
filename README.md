@@ -1,4 +1,4 @@
-# Lake
+# Lake  [![Build Status](https://travis-ci.org/m1kc/lake.svg?branch=master)](https://travis-ci.org/m1kc/lake)
 
 Custom `rc.lua` for Awesome WM, written with plugins in mind. Making the Awesome truly awesome.
 
