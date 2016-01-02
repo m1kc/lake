@@ -89,3 +89,13 @@ Register a hotkey or button globally or for every window (making it window-speci
 ### lake.rule(rule)
 
 Register a rule.
+
+
+### lake.every_second(function)
+
+Run the given function at the beginning of every second. Use this and `lake.timer()` instead of usual timers.
+
+
+### lake.timer(N, function)
+
+Run the given function every N ticks (every tick is 0,1 second). Use this and `lake.every_second()` instead of usual timers. Prefer `lake.every_second()` when you need 1-second timers.

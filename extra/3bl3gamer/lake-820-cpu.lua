@@ -1,5 +1,5 @@
 local cpus_number = 4
-local cpu_temp_path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
+local colors = {"#FF6E00", "#CB0C29", "#49CC35", "#0077FF"}
 
 function new_stat()
 	return {["idle"]=0, ["total"]=0}
@@ -31,36 +31,20 @@ function update_cpu_percents()
 	local t=stats; stats=prev_stats; prev_stats=t
 end
 
-function get_cpu_temp()
-	local f = io.open(cpu_temp_path, "r")
-	local temp = f:read()
-	f:close()
-	return math.floor(temp / 1000)
-end
-
 return function(lake)
 	local awful = lake.ask "awful"
-	local wibox = lake.ask "wibox"
-	
+
 	local cpugraph = awful.widget.graph()
 	cpugraph:set_width(50)
 	cpugraph:set_stack(true)
-	cpugraph:set_stack_colors({"#FF6E00", "#CB0C29", "#49CC35", "#0077FF"})
+	cpugraph:set_stack_colors(colors)
 	cpugraph:set_max_value(100 * cpus_number)
-	
-	local tempbox = wibox.widget.textbox()
-	tempbox:set_text("---")
-	
+
 	for s = 1, lake.screens() do
 		lake.add_to_right(cpugraph, s)
-		lake.add_to_right(tempbox, s)
 	end
-	
-	client.connect_signal("tick", function()
-		tempbox:set_text(get_cpu_temp() .. "°C")
-	end)
-	
-	client.connect_signal("tick-5", function()
+
+	lake.timer(2, function()
 		update_cpu_percents()
 		for i = 1, cpus_number do
 			cpugraph:add_value(percents[i], i)
