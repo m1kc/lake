@@ -1,0 +1,2 @@
+language: cpp
+script: find -name '*.lua' -exec luac -p '{}' '+'
