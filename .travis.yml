@@ -1,3 +1,4 @@
 language: cpp
+sudo: required
+install: sudo apt-get install lua
 script: find -name '*.lua' -exec luac -p '{}' '+'
-
