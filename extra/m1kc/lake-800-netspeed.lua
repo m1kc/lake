@@ -1,10 +1,17 @@
 return function(lake)
-	local awful = lake.ask "awful"
+	local interface = "wlp2s0"  -- change this to fit your needs
 	local wibox = lake.ask "wibox"
-	local vicious = lake.ask "vicious"
-	wifiwidget = wibox.widget.textbox()
-	vicious.register(wifiwidget, vicious.widgets.net, "↓${wlp2s0 down_kb}kbps ↑${wlp2s0 up_kb}kbps")
+	local widgets = lake.ask "vicious.widgets"
+	local netwidget = wibox.widget.textbox()
 	for s = 1, lake.screens() do
-		lake.add_to_right(wifiwidget, s)
+		lake.add_to_right(netwidget, s)
 	end
+	lake.every_second(function()
+		local data = widgets.net()
+		netwidget:set_text(
+			"↓"..data["{"..interface.." down_kb}"].."kbps"
+			.." "..
+			"↑"..data["{"..interface.." up_kb}"].."kbps"
+		)
+	end)
 end
