@@ -37,7 +37,7 @@ return function(lake)
 
 		local flag = ""
 		if status == "Charging" then flag = "+" end
-		batbox:set_text(capacity.."% "..flag..(math.floor(power/100)/10).."W")
+		batbox:set_text("["..capacity.."% "..flag..(math.floor(power/100)/10).."W]")
 
 		for i = 2, 5 do
 			bat_powers[i-1] = bat_powers[i]
