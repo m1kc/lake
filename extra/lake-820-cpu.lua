@@ -33,18 +33,18 @@ end
 
 return function(lake)
 	local awful = lake.ask "awful"
-	
+
 	local cpugraph = awful.widget.graph()
 	cpugraph:set_width(50)
 	cpugraph:set_stack(true)
 	cpugraph:set_stack_colors(colors)
 	cpugraph:set_max_value(100 * cpus_number)
-	
+
 	for s = 1, lake.screens() do
 		lake.add_to_right(cpugraph, s)
 	end
-	
-	lake.timer(50, function()
+
+	lake.timer(2, function()
 		update_cpu_percents()
 		for i = 1, cpus_number do
 			cpugraph:add_value(percents[i], i)
