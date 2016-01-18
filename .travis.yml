@@ -1,4 +1,6 @@
 language: cpp
-sudo: required
-install: sudo apt-get install lua5.2
+addons:
+	apt:
+		packages:
+		- lua5.2
 script: find -name '*.lua' -exec luac -p '{}' '+' && echo 'Syntax check OK.'
