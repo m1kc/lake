@@ -1,5 +1,16 @@
-local cpus_number = 4
+local cpus_number = 0
+local f = io.open("/proc/stat", "r")
+f:read() -- skipping first line with whole CPU info
+while f:read():sub(1, 3) == "cpu" do
+	cpus_number = cpus_number + 1
+end
+f:close()
+
 local colors = {"#FF6E00", "#CB0C29", "#49CC35", "#0077FF"}
+while #colors < cpus_number do
+	table.insert(colors, colors[#colors-3])
+end
+
 
 function new_stat()
 	return {["idle"]=0, ["total"]=0}
