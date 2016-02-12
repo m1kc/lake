@@ -24,7 +24,7 @@ Lake tries to make your life easier, not to stand in your way. Even basic featur
 
 ## API documentation
 
-Here's the template for you plugin:
+Here's the template for your plugin:
 
 ```lua
 return function(lake)
