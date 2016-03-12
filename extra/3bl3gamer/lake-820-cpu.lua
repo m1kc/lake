@@ -55,7 +55,7 @@ return function(lake)
 		lake.add_to_right(cpugraph, s)
 	end
 
-	lake.timer(2, function()
+	lake.every_second(function()
 		update_cpu_percents()
 		for i = 1, cpus_number do
 			cpugraph:add_value(percents[i], i)

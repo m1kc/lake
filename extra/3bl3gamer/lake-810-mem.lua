@@ -25,7 +25,7 @@ return function(lake)
 		lake.add_to_right(memgraph, s)
 	end
 
-	lake.timer(2, function()
+	lake.every_second(function()
 		total, free, buffers, cached = get_mem_info()
 		memgraph:set_max_value(total)
 		memgraph:add_value(total-free-buffers-cached, 1)

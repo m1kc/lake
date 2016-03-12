@@ -14,7 +14,6 @@ return function(lake)
 
 	local mymainmenu = awful.menu({ items = {
 		{ "awesome", myawesomemenu, beautiful.awesome_icon },
-		{ "xterm", lake.get_var("terminal") },
 		{ "lxterminal", "lxterminal" },
 		{ "screenshot", "gnome-screenshot -i" },
 		{ "lock screen", "xscreensaver-command -lock" },
