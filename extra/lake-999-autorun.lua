@@ -52,6 +52,6 @@ return function(lake)
 	awful.util.spawn "volumeicon"
 
 	run_once(awful, lfs, "/usr/lib/gnome-settings-daemon/gnome-settings-daemon-localeexec")
-	run_once(awful, lfs, "compton", "compton -I 0.05 -O 0.05 -o 0.15")
+	run_once(awful, lfs, "compton", "compton -I0 -O0 -o 0.15")
 	run_once(awful, lfs, "xscreensaver", "xscreensaver -no-splash")
 end
