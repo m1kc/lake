@@ -49,7 +49,7 @@ return function(lake)
 	local lfs = lake.ask "lfs"
 
 	awful.util.spawn "setxkbmap -option grp:caps_toggle us,ru"
-	awful.util.spawn "volumeicon"
+	run_once(awful, lfs, "volumeicon", "volumeicon")
 
 	run_once(awful, lfs, "/usr/lib/gnome-settings-daemon/gnome-settings-daemon-localeexec")
 	run_once(awful, lfs, "compton", "compton -o 0.15 --no-fading-openclose")
