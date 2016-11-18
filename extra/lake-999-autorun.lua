@@ -51,7 +51,7 @@ return function(lake)
 	awful.util.spawn "setxkbmap -option grp:caps_toggle us,ru"
 
 	run_once(awful, lfs, "/usr/lib/gnome-settings-daemon/gnome-settings-daemon-localeexec")
-	run_once(awful, lfs, "compton")
+	run_once(awful, lfs, "compton", "compton -I 0.05 -O 0.05 -o 0.15")
 	run_once(awful, lfs, "xscreensaver", "xscreensaver -no-splash")
 	run_once(awful, lfs, "volumeicon")
 end
